@@ -1,18 +1,18 @@
-import postCharge from "./utils/postCharge"
+import handleEmporiaToDoorloopCharges from "./utils/handleEmporiaToDoorloopCharges"
 import cron from 'node-cron';
 
-export default async function POST(req, res) {
+export default async function POST(_, res) {
     try {
-        cron.schedule(" 0 * * * * ", async () => {
+        cron.schedule(process.env.CRON_SCHEDULER, async () => {
             console.log("");
             console.log("######################################");
             console.log("#                                    #");
-            console.log("# Running scheduler every 1 hour     #");
+            console.log("# Running scheduler                  #");
             console.log("#                                    #");
             console.log("######################################");
             console.log("");
 
-            await postCharge();
+            await handleEmporiaToDoorloopCharges();
         });
         res.status(200).json({ message: "Successfully posted!" });
     } catch (error) {

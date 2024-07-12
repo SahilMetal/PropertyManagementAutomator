@@ -16,13 +16,12 @@ const getToken = async () => {
 
   return new Promise((resolve) => {
     cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: (result) => {
+      onSuccess: (result: any) => {
         const token = result.getIdToken().getJwtToken();
-        // console.log(token);
         resolve(token);
       },
-      onFailure: (err) => {
-        console.log("error is ", JSON.stringify(err));
+      onFailure: (err: any) => {
+        console.error("Emporia token error: ", JSON.stringify(err));
         resolve(null);
       },
     });
@@ -35,7 +34,7 @@ const getUserPool = () => {
   return userPool;
 };
 
-const getCognitoUser = (userPool) => {
+const getCognitoUser = (userPool: any) => {
   const userParams = { Pool: userPool, Username: username };
   const cognitoUser = new CognitoUser(userParams);
   return cognitoUser;

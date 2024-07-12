@@ -10,7 +10,7 @@ const processItem = async(device: any) => {
   const sensorId = device.deviceGid;
   const { data: { data } } = await axios.get(`https://app.doorloop.com/api/leases?filter_unit=${unitId}`, configDL)
   const leaseId = data[0].id                                                                  
-  const { data: { usageList } } = await axios.get(`https://api.emporiaenergy.com/AppAPI?apiMethod=getChartUsage&deviceGid=${sensorId}&channel=1,2,3&start=2024-07-01T20:00:00.000Z&end=2024-07-09T19:00:00.000Z&scale=1MON&energyUnit=KilowattHours`, configEmp)
+  const { data: { usageList } } = await axios.get(`https://api.emporiaenergy.com/AppAPI?apiMethod=getChartUsage&deviceGid=${sensorId}&channel=1,2,3&start=2024-07-01T20:00:00.000Z&end=2024-07-09T19:00:00.000Z&scale=1MON&energyUnit=KilowattHours`, configEmp as any)
   const charge = (usageList[0] * .132).toFixed(2);
   const chargeData = {
     "date": "2024-07-11", // new Date

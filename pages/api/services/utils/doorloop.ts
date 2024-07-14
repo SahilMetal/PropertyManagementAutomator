@@ -12,7 +12,7 @@ const date = dayjs().format('YYYY-MM-DD')
 const getLeaseByUnitID = async (unitId: string) => {
   try {
     const { data: { data } } = await axios.get(`${DOORLOOP_URL}/leases?filter_unit=${unitId}`, configDL)
-    return data[0].id;
+    return data;
   } catch (err: any) {
     throw new Error(err)
   }
@@ -20,13 +20,19 @@ const getLeaseByUnitID = async (unitId: string) => {
 
 const getAddressByUnitID = async (unitId: string) => {
   try {
-    const { data: { address: {street1, city, state, zip} }} = await axios.get(`${DOORLOOP_URL}/units/${unitId}`, configDL)
-    return `${street1}, ${city}, ${state}, ${zip}`;
+    return await axios.get(`${DOORLOOP_URL}/units/${unitId}`, configDL)
   } catch (err: any) {
     throw new Error(err)
   }
 }
 
+const getTenantByUnitID = async (unitId: string) => {
+  try {
+    return await axios.get(`${DOORLOOP_URL}/tenants?filter_unit=${unitId}`, configDL)
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
 
 const postLeaseChargeToLeaseByID = async (usage: number, lease: string) => {
     try {
@@ -46,12 +52,12 @@ const postLeaseChargeToLeaseByID = async (usage: number, lease: string) => {
     
 }
 
-const sendEmailToClient = async (emailString: string) => {
+const sendEmailToClient = async (emailString: string, tenantEmail: string) => {
   console.log('SENDING!!!!!!')
   try {
     const { data, error } = await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
-        to: ['delivered@resend.dev'],
+        to: [tenantEmail],
         subject: 'done??',
         text: emailString, //function with arguments --> address, usage, charge per KWH, total charge --> return a string
       } as any);
@@ -65,4 +71,4 @@ const sendEmailToClient = async (emailString: string) => {
   }
 }
 
-export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID }
+export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID, getTenantByUnitID}

@@ -17,7 +17,7 @@ app.prepare().then(async() => {
     try {
         const response = await axios.post(
         `${BASE_URL}:${PORT}/api/services/scheduler`,
-        { 
+        {
             headers: { "Content-Type": "application/json"}
         });
         console.info('response from scheduler: ', response.statusText)

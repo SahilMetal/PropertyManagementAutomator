@@ -1,11 +1,12 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { EMPORIA_URL } from './constants';
 const {
   CognitoUserPool,
   CognitoUser,
   AuthenticationDetails,
 } = require("amazon-cognito-identity-js");
 
-import { EMPORIA_URL } from './constants';
 
 const { 
   AUTH_USERNAME: Username, 
@@ -13,7 +14,6 @@ const {
   USER_POOL_ID: UserPoolId, 
   CLIENT_ID:  ClientId
 } = process.env
-
 
 const getEmporiaToken = async () => {
   const Pool = new CognitoUserPool({ UserPoolId, ClientId });
@@ -23,8 +23,8 @@ const getEmporiaToken = async () => {
   return new Promise((resolve, reject) => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: (result: any) => {
-        const token: string = result.getIdToken().getJwtToken();
-        resolve(token as string);
+        const token = result.getIdToken().getJwtToken();
+        resolve(token);
       },
       onFailure: (err: any) => {
         reject(err);
@@ -36,7 +36,7 @@ const getEmporiaToken = async () => {
 const getEmporiaDevices = async (Authtoken: string) => {
   try {
     const configEmp = { headers: {"Content-Type": "application/json", Authtoken}}
-    const { data: { devices } } = await axios.get(`${EMPORIA_URL}/customers/devices`, configEmp as any)
+    const { data: { devices } } = await axios.get(`${EMPORIA_URL}/customers/devices`, configEmp)
     return devices
   } catch (err: any) {
     throw new Error(err)
@@ -44,13 +44,16 @@ const getEmporiaDevices = async (Authtoken: string) => {
 }
 
 const getEmporiaChargeFromSensorID = async (Authtoken: string, sensorId: string) => {
+  const firstOfMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+  const lastOfMonth = dayjs().endOf('month').format('YYYY-MM-DD')
   try {
     const configEmp = { headers: {"Content-Type": "application/json", Authtoken}}
-    const { data: { usageList } } = await axios.get(`${EMPORIA_URL}/AppAPI?apiMethod=getChartUsage&deviceGid=${sensorId}&channel=1,2,3&start=2024-07-01T20:00:00.000Z&end=2024-07-09T19:00:00.000Z&scale=1MON&energyUnit=KilowattHours`, configEmp as any)
-    return usageList
+    const { data: { usageList } } = await axios.get(`${EMPORIA_URL}/AppAPI?apiMethod=getChartUsage&deviceGid=${sensorId}&channel=1,2,3&start=${firstOfMonth}T20:00:00.000Z&end=${lastOfMonth}T19:00:00.000Z&scale=1MON&energyUnit=KilowattHours`, configEmp as any)
+    return usageList;
   } catch (err: any) {
     throw new Error(err)
   }
 }
+
 
 export { getEmporiaDevices, getEmporiaToken, getEmporiaChargeFromSensorID };

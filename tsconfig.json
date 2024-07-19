@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/api/services/utils/Authenticate.ts", "server.js", "pages/api/services/scheduler.js", "src/app/test.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/api/services/utils/Authenticate.ts", "server.js", "pages/api/services/scheduler.js", "src/app/test.js", "components/sign-in.jsx"],
   "exclude": ["node_modules"]
 }

@@ -8,7 +8,7 @@
     "start": "node server.js",
     "lint": "next lint",
     "prepare": "husky",
-    "test": "echo \"No test specified\"",
+    "test": "vitest",
     "check-branch-name": "chmod 755 ./hooks/check_branch_naming.sh && sh ./hooks/check_branch_naming.sh"
   },
   "husky": {
@@ -17,12 +17,18 @@
     }
   },
   "dependencies": {
+    "@auth/express": "^0.5.6",
+    "@auth/prisma-adapter": "^2.4.1",
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "@prisma/client": "^5.16.2",
+    "@vitejs/plugin-react": "^4.3.1",
     "amazon-cognito-identity-js": "^6.3.12",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "next": "14.2.4",
+    "next-auth": "5.0.0-beta.19",
     "node-cron": "^3.0.3",
     "react": "^18",
     "react-dom": "^18",
@@ -31,15 +37,19 @@
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "husky": "^9.0.11",
+    "jsdom": "^24.1.0",
     "postcss": "^8",
+    "prisma": "^5.16.2",
     "tailwind": "^4.0.0",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.0.3"
   }
 }

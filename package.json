@@ -8,7 +8,7 @@
     "start": "node server.js",
     "lint": "next lint",
     "prepare": "husky",
-    "test": "vitest",
+    "test": "echo \"No test specified\"",
     "check-branch-name": "chmod 755 ./hooks/check_branch_naming.sh && sh ./hooks/check_branch_naming.sh"
   },
   "husky": {

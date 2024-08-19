@@ -13,7 +13,7 @@ export default function Page () {
       </div>
       <a href="/admin">Admin </a>
       <a href="/api/auth/me">Session </a>
-      <a href="/testing">Test Page </a>
+      <a href="/work_orders">Work Orders </a>
       <UserSession />
     </>
   )

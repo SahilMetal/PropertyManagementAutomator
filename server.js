@@ -1,11 +1,14 @@
 const express = require("express");
 const next = require("next");
 const axios = require("axios");
+const cors = require("cors");
 
 const dev = process.env.NODE_ENV !== "production"; // add node
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const http = require("http");
+
+app.use(cors())
 
 app.prepare().then(async() => {
     const PORT = process.env.PORT;

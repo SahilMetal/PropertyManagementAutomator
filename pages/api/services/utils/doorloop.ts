@@ -1,9 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
-import { Resend } from 'resend'
 import { DOORLOOP_CHARGE_ACCOUNT, CHARGE_AMOUNT_PER_KW, DOORLOOP_URL} from './constants';
+import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 
 const configDL = { headers: {"Authorization": `Bearer ${process.env.DOORLOOP_TOKEN}`}}
 const date = dayjs().format('YYYY-MM-DD')
@@ -31,6 +30,33 @@ const getTenantByUnitID = async (unitId: string) => {
     return await axios.get(`${DOORLOOP_URL}/tenants?filter_unit=${unitId}`, configDL)
   } catch (err: any) {
     throw new Error(err)
+  }
+}
+
+const getAllWorkOrdersPropertyAndVendorIds = async () => {
+  try {
+    return await axios.get(`${DOORLOOP_URL}/tasks`, configDL)
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+const getPropertyNameByPropertyId = async (propertyId: string) => {
+  try {
+    console.log('propId: ', propertyId)
+    const result = await axios.get(`${DOORLOOP_URL}/properties/${propertyId}`, configDL)
+    return result.data.name;
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+const getVendorNameByVendorId = async (vendorId: string) => {
+  try {
+      const result = await axios.get(`${DOORLOOP_URL}/vendors/${vendorId}`, configDL)
+      return result.data.name;
+    } catch (err: any) {
+      throw new Error(err)
   }
 }
 
@@ -71,4 +97,14 @@ const sendEmailToClient = async (emailString: string, tenantEmail: string) => {
   }
 }
 
-export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID, getTenantByUnitID}
+const sendJournalEntry = async (property: string, category: string, unit: string, description: string, debits: string, credits: string) => {
+  console.log(property, category, unit, description, debits, credits)
+  // fetch property by name
+  // formlate journal entry using data from arguments/calls
+  // send to doorloop/api/general-entries/
+  console.log('util function')
+}
+
+
+
+export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID, getTenantByUnitID, sendJournalEntry, getPropertyNameByPropertyId, getVendorNameByVendorId, getAllWorkOrdersPropertyAndVendorIds}

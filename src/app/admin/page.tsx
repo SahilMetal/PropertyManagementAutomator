@@ -1,10 +1,7 @@
-import { useSession } from "next-auth/react";
 import { auth } from '@/../auth';
  
 export default async function Page() {
-  const session = await auth();
-  console.log((session as any)?.user.role)
- 
+  const session = await auth(); 
   if ((session as any)?.user.role === "admin") {
     return <p>You are an admin, welcome!</p>;
   }

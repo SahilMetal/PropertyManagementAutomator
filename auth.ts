@@ -11,7 +11,7 @@ export const { handlers, auth } = NextAuth({
   ],
   callbacks: {
     jwt({ token, user }) {
-      console.log(token.email, 'role:', token.role)
+      // console.log(token.email, 'role:', token.role)
       if(token.email == 'sahilmetalwala@gmail.com') token.role = 'admin' // crude but I cannot set user roles on github
       if(user) token.role = (user as any).role
       return token

@@ -8,12 +8,12 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const http = require("http");
 
-app.use(cors())
 
 app.prepare().then(async() => {
-    const PORT = process.env.PORT;
-    const BASE_URL = process.env.BASE_URL;
+  const PORT = process.env.PORT;
+  const BASE_URL = process.env.BASE_URL;
     const server = express();
+    server.use(cors())
     const httpServer = http.createServer(server);
 
     const runScheduler = async() => {

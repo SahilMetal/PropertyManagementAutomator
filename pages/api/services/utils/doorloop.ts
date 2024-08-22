@@ -60,9 +60,19 @@ const getVendorNameByVendorId = async (vendorId: string) => {
   }
 }
 
-const postLeaseChargeToLeaseByID = async (usage: number, lease: string) => {
+const getAssignedNameByAssignedToId = async (assignedToId: string) => {
+  try {
+      const result = await axios.get(`${DOORLOOP_URL}/users/${assignedToId}`, configDL)
+      return result.data.name;
+    } catch (err: any) {
+      throw new Error(err)
+  }
+}
+
+const postLeaseChargeToLeaseByID = async (usage: any, lease: string) => {
     try {
       const amount = (usage * CHARGE_AMOUNT_PER_KW).toFixed(2);
+      console.log('LOOK AT THE CASH AMOUNT:' , amount)
       const chargeData = {
         date,
         lease,
@@ -84,7 +94,7 @@ const sendEmailToClient = async (emailString: string, tenantEmail: string) => {
     const { data, error } = await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
         to: [tenantEmail],
-        subject: 'done??',
+        subject: 'insert subject here',
         text: emailString, //function with arguments --> address, usage, charge per KWH, total charge --> return a string
       } as any);
     if (error) {
@@ -107,4 +117,4 @@ const sendJournalEntry = async (property: string, category: string, unit: string
 
 
 
-export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID, getTenantByUnitID, sendJournalEntry, getPropertyNameByPropertyId, getVendorNameByVendorId, getAllWorkOrdersPropertyAndVendorIds}
+export { getLeaseByUnitID, postLeaseChargeToLeaseByID, sendEmailToClient, getAddressByUnitID, getTenantByUnitID, sendJournalEntry, getPropertyNameByPropertyId, getVendorNameByVendorId, getAllWorkOrdersPropertyAndVendorIds, getAssignedNameByAssignedToId}

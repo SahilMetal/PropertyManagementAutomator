@@ -11,9 +11,14 @@ export default function Page () {
         <a href="/api/auth/signin">Login </a>
         <a href="/api/auth/signout">Logout </a>
       </div>
-      <a href="/admin">Admin </a>
-      <a href="/api/auth/me">Session </a>
+      <div>
+        <a href="/admin">Admin </a>
+        <a href="/api/auth/me">Session </a>
+      </div>
+      <div>
       <a href="/work_orders">Work Orders </a>
+      <a href="/journal">Journal Entries </a>
+      </div>
       <UserSession />
     </>
   )

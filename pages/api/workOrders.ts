@@ -1,4 +1,4 @@
-import { getAllWorkOrdersPropertyAndVendorIds, getPropertyNameByPropertyId, getVendorNameByVendorId } from "./services/utils/doorloop";
+import { getAllWorkOrdersPropertyAndVendorIds, getAssignedNameByAssignedToId, getPropertyNameByPropertyId, getVendorNameByVendorId } from "./services/utils/doorloop";
 
 
 const handleWorkOrders = async (_: any, res: any) => {
@@ -24,9 +24,11 @@ const handleWorkOrders = async (_: any, res: any) => {
 const handleWorkOrder = async (order: any) => {
   const propertyName = await getPropertyNameByPropertyId(order.property)
   const vendorName = await getVendorNameByVendorId(order.workOrder.assignedToVendor)
+  const assignedUserName = await getAssignedNameByAssignedToId(order.assignedToUsers[0])
   return { 
     propertyName: propertyName, 
-    vendorName: vendorName, 
+    vendorName: vendorName,
+    assignedToName: assignedUserName,
     workOrder: order
   }
 }

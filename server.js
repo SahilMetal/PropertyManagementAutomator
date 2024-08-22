@@ -10,8 +10,8 @@ const http = require("http");
 
 
 app.prepare().then(async() => {
-  const PORT = process.env.PORT;
-  const BASE_URL = process.env.BASE_URL;
+  const PORT = process.env.NEXT_PUBLIC_PORT;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const server = express();
     server.use(cors())
     const httpServer = http.createServer(server);

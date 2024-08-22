@@ -15,7 +15,7 @@ export default function Component() {
         const vendNameArr: any[] = []
         const workOrderArr: any[] = []
         async function fetchData() {
-            const workOrderDataFetch = await axios.get(`http://localhost:3000/api/workOrders`)
+            const workOrderDataFetch = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/workOrders`)
             console.log('!!!', workOrderDataFetch.data)
             workOrderDataFetch.data.forEach((e: any) => {
                 workOrderArr.push(e)
@@ -25,8 +25,6 @@ export default function Component() {
             setPropertyNames(propNameArr)
             setVendorNames(vendNameArr)
             setWorkOrderData(workOrderArr)
-            console.log('vend arr' ,vendNameArr)
-            console.log('work order arr' ,workOrderArr)
         }
         fetchData()
     }, []) // dependency array ***IMPORTANT TO KNOW***
@@ -101,7 +99,7 @@ export default function Component() {
                             Subject
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                            Reference #
+                            Reference # / Assigned User
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Issued / Due
@@ -124,7 +122,8 @@ export default function Component() {
                                     </div>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p className="text-gray-900 uppercase">#{item.workOrder.reference}</p>
+                                    <p className="text-gray-900 uppercase">#{item.workOrder.reference} </p>
+                                    <p className="text-gray-900">{item.assignedToName}</p>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <p className="text-gray-900 whitespace-no-wrap">Issued: {(item.workOrder.createdAt).slice(0,10)} /</p>

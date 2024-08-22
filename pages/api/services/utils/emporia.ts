@@ -27,6 +27,7 @@ const getEmporiaToken = async () => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: (result: any) => {
         const token = result.getIdToken().getJwtToken();
+        // console.log(token)
         resolve(token);
       },
       onFailure: (err: any) => {
@@ -40,23 +41,24 @@ const getEmporiaDevices = async (Authtoken: string) => {
   try {
     const configEmp = { headers: {"Content-Type": "application/json", Authtoken}}
     const { data: { devices } } = await axios.get(`${EMPORIA_URL}/customers/devices`, configEmp)
-    return devices
+    return devices;
   } catch (err: any) {
     throw new Error(err)
   }
 }
 
-const getEmporiaChargeFromSensorID = async (Authtoken: string, sensorId: string, startLeaseDate: string) => {
+const getEmporiaChargeFromSensorID = async (Authtoken: string, sensorId: any, startLeaseDate: string) => {
   const firstOfMonth = dayjs().startOf('month').format('YYYY-MM-DD') // if firstofmonth is not after lease start date, use lease start date instead
   const lastOfMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+  const now = dayjs().format();
   let startDate = firstOfMonth;
   if (dayjs(firstOfMonth).dayOfYear() < dayjs(startLeaseDate).dayOfYear()) {
     startDate = startLeaseDate;
   }
   try {
     const configEmp = { headers: {"Content-Type": "application/json", Authtoken}}
-    const { data: { usageList } } = await axios.get(`${EMPORIA_URL}/AppAPI?apiMethod=getChartUsage&deviceGid=${sensorId}&channel=1,2,3&start=${startDate}T20:00:00.000Z&end=${lastOfMonth}T19:00:00.000Z&scale=1MON&energyUnit=KilowattHours`, configEmp as any)
-    return usageList;
+    const data = await axios.get(`${EMPORIA_URL}/AppAPI?apiMethod=getDeviceListUsages&deviceGids=${sensorId}&instant=${now}&scale=1MON&energyUnit=KilowattHours`, configEmp as any)
+    return data;
   } catch (err: any) {
     throw new Error(err)
   }
